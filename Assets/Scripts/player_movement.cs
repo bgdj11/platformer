@@ -6,18 +6,18 @@ using UnityEngine;
 public class player_movement : MonoBehaviour
 {
     private Rigidbody2D body;
-    [SerializeField] private float speed = 8; //SerializeFiled enables changing it from engine
-    [SerializeField] private float jumpPower = 20;
+    [SerializeField] private float speed = 8; // Brzina kretanja igraca
+    [SerializeField] private float jumpPower = 20; // Snaga skoka igraca
     private Animator anim;
     private BoxCollider2D boxCollider;
-    [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private LayerMask wallLayer;
-    private float wallJumpCooldown;
-    private float horizontalInput;
+    [SerializeField] private LayerMask groundLayer; // LayerMask za detekciju zemlje
+    [SerializeField] private LayerMask wallLayer; // LayerMask za detekciju zida
+    private float wallJumpCooldown; // Cooldown za wall jump
+    private float horizontalInput; // Ulaz za horizontalno kretanje
 
     private void Awake()
     {
-        // Take references for rigid body and animator from object
+        // Inicijalizacija referenci na komponente
         body = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         boxCollider = GetComponent<BoxCollider2D>();
@@ -25,47 +25,46 @@ public class player_movement : MonoBehaviour
 
     private void Update()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
+        horizontalInput = Input.GetAxis("Horizontal"); // Uzimanje ulaza za horizontalno kretanje
 
-
-        // fliping player based on moving left/right
-        if(horizontalInput > 0.01f) // is moving right?
+        // Okretanje igrača u zavisnosti od pritiska na levo/desno dugme
+        if(horizontalInput > 0.01f) 
         {
-            transform.localScale = Vector3.one;
+            transform.localScale = Vector3.one; // Okretanje udesno
         }
-        else if (horizontalInput < - 0.01f)  // is moving left?
+        else if (horizontalInput < - 0.01f)  
         {
-            transform.localScale = new Vector3(-1, 1, 1);
+            transform.localScale = new Vector3(-1, 1, 1); // Okretanje ulevo
         }
 
-        // setting animator params
-        anim.SetBool("run", horizontalInput != 0);
-        anim.SetBool("grounded", isGrounded());
+        // Postavljanje animator parametara
+        anim.SetBool("run", horizontalInput != 0); // Postavljanje animacije trčanja
+        anim.SetBool("grounded", isGrounded()); // Provera da li je igrač na zemlji i postavljanje animacije
 
-        // wall jumping
+        // Wall jumping
         if(wallJumpCooldown > 0.2f)
         {
-            body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
+            body.velocity = new Vector2(horizontalInput * speed, body.velocity.y); // Postavljanje brzine kretanja igrača
 
             if(onWall() && !isGrounded())
             {
-                body.gravityScale = 0;
-                body.velocity = Vector2.zero;
+                body.gravityScale = 0; // Zaustavljanje gravitacije ako je igrač na zidu
+                body.velocity = Vector2.zero; // Postavljanje brzine na nulu
             }
             else
             {
-                body.gravityScale = 3;
+                body.gravityScale = 3; // Postavljanje gravitacije na normalnu vrednost
             }
 
             if (Input.GetKey(KeyCode.Space))
             {
-                jump();
+                jump(); // Pokretanje skoka ako je pritisnuto Space dugme
             }
 
         }
         else
         {
-            wallJumpCooldown += Time.deltaTime;
+            wallJumpCooldown += Time.deltaTime; // Dodavanje vremena na cooldown za wall jump
         }
 
     }
@@ -74,44 +73,38 @@ public class player_movement : MonoBehaviour
     {
         if(isGrounded())
         {
-            body.velocity = new Vector2(body.velocity.x, jumpPower);
+            body.velocity = new Vector2(body.velocity.x, jumpPower); // Postavljanje brzine za skok
 
-            anim.SetTrigger("jump");
+            anim.SetTrigger("jump"); // Pokretanje animacije skoka
         }
         else if(onWall() && !isGrounded())
         {
             if (horizontalInput == 0)
             {
-                body.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 10, 0);
-                transform.localScale = new Vector3(-Mathf.Sign(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                body.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 10, 0); // Wall jump sa zida ako se ne pritiska levo ili desno
+                transform.localScale = new Vector3(-Mathf.Sign(transform.localScale.x), transform.localScale.y, transform.localScale.z); // Okretanje igrača
             }
             else
             {
-                body.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 3, 6);
+                body.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 3, 6); // Wall jump sa zida ako se pritisne levo/desno
             }
-            wallJumpCooldown = 0;
+            wallJumpCooldown = 0; // Resetovanje cooldowna za wall jump
             
         }
        
     }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-         
-    }
-
     private bool isGrounded()
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
 
-        return raycastHit.collider != null;
+        return raycastHit.collider != null; // Provera da li je igrač na zemlji
     }
 
     private bool onWall()
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer);
 
-        return raycastHit.collider != null;
+        return raycastHit.collider != null; // Provera da li je igrač na zidu
     }
 
 }
