@@ -27,7 +27,7 @@ public class player_movement : MonoBehaviour
     {
         horizontalInput = Input.GetAxis("Horizontal"); // Uzimanje ulaza za horizontalno kretanje
 
-        // Okretanje igrača u zavisnosti od pritiska na levo/desno dugme
+        // Okretanje igraca u zavisnosti od pritiska na levo/desno dugme
         if(horizontalInput > 0.01f) 
         {
             transform.localScale = Vector3.one; // Okretanje udesno
@@ -38,17 +38,17 @@ public class player_movement : MonoBehaviour
         }
 
         // Postavljanje animator parametara
-        anim.SetBool("run", horizontalInput != 0); // Postavljanje animacije trčanja
-        anim.SetBool("grounded", isGrounded()); // Provera da li je igrač na zemlji i postavljanje animacije
+        anim.SetBool("run", horizontalInput != 0); // Postavljanje animacije trcanja
+        anim.SetBool("grounded", isGrounded()); // Provera da li je igrac na zemlji i postavljanje animacije
 
         // Wall jumping
         if(wallJumpCooldown > 0.2f)
         {
-            body.velocity = new Vector2(horizontalInput * speed, body.velocity.y); // Postavljanje brzine kretanja igrača
+            body.velocity = new Vector2(horizontalInput * speed, body.velocity.y); // Postavljanje brzine kretanja igraca
 
             if(onWall() && !isGrounded())
             {
-                body.gravityScale = 0; // Zaustavljanje gravitacije ako je igrač na zidu
+                body.gravityScale = 0; // Zaustavljanje gravitacije ako je igrac na zidu
                 body.velocity = Vector2.zero; // Postavljanje brzine na nulu
             }
             else
@@ -105,6 +105,11 @@ public class player_movement : MonoBehaviour
         RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer);
 
         return raycastHit.collider != null; // Provera da li je igrač na zidu
+    }
+
+    public bool canAttack()
+    {
+        return horizontalInput == 0 && isGrounded() && !onWall();
     }
 
 }
