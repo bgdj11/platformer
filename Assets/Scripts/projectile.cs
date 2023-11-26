@@ -27,9 +27,9 @@ public class projectile : MonoBehaviour
 
         lifeTime += Time.deltaTime; // Dodavanje proteklog vremena od poslednjeg azuriranja
 
-        if (lifeTime > 5)
+        if (lifeTime > 4)
         {
-            gameObject.SetActive(false); // Deaktivacija projektila nakon odredjenog vremena
+            Deactivate(); // Deaktivacija projektila nakon odredjenog vremena
         }
     }
 
