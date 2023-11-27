@@ -22,7 +22,7 @@ public class projectile : MonoBehaviour
     {
         if (hit) return; // Ako je projektil vec udario, prekini azuriranje
 
-        float movementSpeed = speed * Time.deltaTime * direction; // Racunanje brzine kretanja projektila
+        float movementSpeed = speed * Time.deltaTime * direction; 
         transform.Translate(movementSpeed, 0, 0); // Pomeranje projektila po x osi
 
         lifeTime += Time.deltaTime; // Dodavanje proteklog vremena od poslednjeg azuriranja
@@ -42,17 +42,17 @@ public class projectile : MonoBehaviour
 
     public void SetDirection(float _direction)
     {
-        lifeTime = 0; // Resetovanje vremena trajanja projektila
-        direction = _direction; // Postavljanje smera kretanja projektila
+        lifeTime = 0; 
+        direction = _direction; // Smer kretanja
         gameObject.SetActive(true); // Aktiviranje projektila
         hit = false; // Postavljanje flaga da projektil nije udario
         boxCollider.enabled = true; // Omogucavanje collider-a projektila
 
-        float localScaleX = transform.localScale.x; // Uzimanje vrednosti skale po X osi
+        float localScaleX = transform.localScale.x; 
 
         if (Mathf.Sign(localScaleX) != direction) // Provera da li je smer skale jednak smeru kretanja
         {
-            localScaleX = -localScaleX; // Promena smera skale po X osi
+            localScaleX = -localScaleX; 
         }
 
         transform.localScale = new Vector3(localScaleX, transform.localScale.y, transform.localScale.z); // Postavljanje nove skale projektila

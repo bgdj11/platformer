@@ -30,16 +30,16 @@ public class player_movement : MonoBehaviour
         // Okretanje igraca u zavisnosti od pritiska na levo/desno dugme
         if(horizontalInput > 0.01f) 
         {
-            transform.localScale = Vector3.one; // Okretanje udesno
+            transform.localScale = Vector3.one; 
         }
         else if (horizontalInput < - 0.01f)  
         {
-            transform.localScale = new Vector3(-1, 1, 1); // Okretanje ulevo
+            transform.localScale = new Vector3(-1, 1, 1);
         }
 
         // Postavljanje animator parametara
-        anim.SetBool("run", horizontalInput != 0); // Postavljanje animacije trcanja
-        anim.SetBool("grounded", isGrounded()); // Provera da li je igrac na zemlji i postavljanje animacije
+        anim.SetBool("run", horizontalInput != 0); 
+        anim.SetBool("grounded", isGrounded()); 
 
         // Wall jumping
         if(wallJumpCooldown > 0.2f)
@@ -58,7 +58,7 @@ public class player_movement : MonoBehaviour
 
             if (Input.GetKey(KeyCode.Space))
             {
-                jump(); // Pokretanje skoka ako je pritisnuto Space dugme
+                jump(); // Pokretanje skoka 
             }
 
         }
@@ -82,7 +82,7 @@ public class player_movement : MonoBehaviour
             if (horizontalInput == 0)
             {
                 body.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 10, 0); // Wall jump sa zida ako se ne pritiska levo ili desno
-                transform.localScale = new Vector3(-Mathf.Sign(transform.localScale.x), transform.localScale.y, transform.localScale.z); // Okretanje igrača
+                transform.localScale = new Vector3(-Mathf.Sign(transform.localScale.x), transform.localScale.y, transform.localScale.z); // Okretanje igraca
             }
             else
             {
@@ -97,14 +97,14 @@ public class player_movement : MonoBehaviour
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
 
-        return raycastHit.collider != null; // Provera da li je igrač na zemlji
+        return raycastHit.collider != null; // Provera da li je igrac na zemlji
     }
 
     private bool onWall()
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer);
 
-        return raycastHit.collider != null; // Provera da li je igrač na zidu
+        return raycastHit.collider != null; // Provera da li je igrac na zidu
     }
 
     public bool canAttack()
