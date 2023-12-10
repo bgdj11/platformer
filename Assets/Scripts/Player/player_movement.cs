@@ -74,6 +74,8 @@ public class player_movement : MonoBehaviour
         if(isGrounded())
         {
             body.velocity = new Vector2(body.velocity.x, jumpPower); // Postavljanje brzine za skok
+            // body.AddForce(new Vector2(0, jumpPower), ForceMode2D.Impulse);
+
 
             anim.SetTrigger("jump"); // Pokretanje animacije skoka
         }

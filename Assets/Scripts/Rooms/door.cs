@@ -14,10 +14,14 @@ public class door : MonoBehaviour
             if (collision.transform.position.x < transform.position.x)
             {
                 cam.MoveToNewRoom(nextRoom);
+                nextRoom.GetComponent<Room>().ActivateRoom(true); // Aktivira sobu u koju igrac ulazi
+                previousRoom.GetComponent<Room>().ActivateRoom(false); // Deaktivira sobu iz koje igrac izlazi
             }
             else
             {
                 cam.MoveToNewRoom(previousRoom);
+                previousRoom.GetComponent<Room>().ActivateRoom(true); // Aktivira sobu u koju igrac ulazi
+                nextRoom.GetComponent<Room>().ActivateRoom(false); // Deaktivira sobu iz koje igrac izlazi
             }
         }
     }
