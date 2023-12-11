@@ -24,12 +24,14 @@ public class fire_trap : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
+        {
             if (!triggered)
             {
                 StartCoroutine(ActivateFireTrap());
             }
-        if (active)
-            collision.GetComponent<health>().TakeDamage(damage);
+            if (active)
+                collision.GetComponent<health>().TakeDamage(damage);
+        }
     }
 
     private IEnumerator ActivateFireTrap()
